@@ -1,0 +1,42 @@
+/* Name: Syed Raza -  CSS document */
+body {
+    background: white;
+    color: brown; 
+}
+
+p {
+    color:orange;
+    text-align:center; font-family:"Times New Roman"; font-size:20px;
+}
+
+
+a:link, a:visited, a:active { 
+    color: red;
+}
+a:hover {
+    font-size:150%; 
+    background: green; 
+    font-family:monospace; 
+    color: yellow; 
+    text-decoration:none;
+}
+
+.caution { 
+    font-size:200%;
+    color: Red 
+}
+
+table {
+    background: magenta;
+    color: pink; 
+    }
+
+ul {
+    background: black;
+}
+
+li {
+    font-size: 16pt;
+    border: solid;
+    border-width: thin; 
+    }
