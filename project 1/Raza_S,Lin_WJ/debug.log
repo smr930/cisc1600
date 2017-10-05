@@ -6,3 +6,7 @@
 [1005/133504.451:ERROR:crash_report_database_win.cc(444)] failed to read records
 [1005/142240.753:ERROR:file_io.cc(89)] ReadExactly: expected 224, observed 0
 [1005/142240.753:ERROR:crash_report_database_win.cc(444)] failed to read records
+[1005/143335.783:ERROR:file_io.cc(89)] ReadExactly: expected 224, observed 0
+[1005/143335.783:ERROR:crash_report_database_win.cc(444)] failed to read records
+[1005/143449.951:ERROR:file_io.cc(89)] ReadExactly: expected 224, observed 0
+[1005/143449.951:ERROR:crash_report_database_win.cc(444)] failed to read records
