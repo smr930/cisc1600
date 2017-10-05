@@ -1,4 +1,4 @@
-/* Your-name CSS document */
+/* Raza, Lin - CSS document */
 body {
 	font-family: Arial, Helvetica, sans-serif;
 	background-color: #3e4444;
@@ -30,22 +30,35 @@ p {
 	padding-left: 10px;
 }
 
+p.title {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color: #3e4444;
+	color: #d7ecf1;
+	font-size: 200%;
+}
+
+p.intro {
+	font-size: 120%;
+	text-align: justify;
+	color: #ffcc5c;
+}
+
 /* Link style */
 a {
-	color: #c1946a;	
+	color: #c1946a;
 	padding-left: 20px;
 }
 
 /* Place link at the bottom and center */
 a.bottom {
-    position: fixed;     
-    text-align: center; 
-	font-family: Arial, Helvetica, sans-serif;	 
-    bottom: 5px;	
+    position: fixed;
+    text-align: center;
+	font-family: Arial, Helvetica, sans-serif;
+    bottom: 5px;
     width: 100%;
 	height: 20px;
 	padding: 4px;
-    background-color:#111; 
+    background-color:#111;
 }
 
 /* List items style */
@@ -77,16 +90,16 @@ hr {
 	margin-top: 10px;
 	margin-bottom: 10px;;
 	background-color:#999;
-	border: 0 none; 
+	border: 0 none;
 }
 
 /* Image style */
 img {
-	width: 200px;
-	height: 200px;
+	width: 300px;
+	height: 300px;
 }
 
 div#images {
 	margin: 0 auto;
-    width: 800px;
+    width: 1000px;
 }
