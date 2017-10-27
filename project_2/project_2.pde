@@ -9,7 +9,7 @@
 //------------------
 // normal vars
 int scene = 0;
-PImage gear;
+int floorPos = 450;
 
 // for instructions/loading animation
 float beginButtonScale = 0;
@@ -17,13 +17,12 @@ float loadingScale = 0;
 
 
 // for mainScene animation
-float ray_counter = 0;
 float rot = 0;
 
 void setup()
 {
    size (800, 600);
-   gear = loadImage("gear.png");
+
   
 }
 
@@ -44,8 +43,8 @@ void draw()
   } 
   */
   
-  instructions();
-  //mainScene();
+  //instructions();
+  mainScene();
   
 }
 
@@ -142,29 +141,162 @@ void loading()
 void mainScene()
 {
     background();
-    gears();
+    floor();
+    building(50); 
+    
+    // display 4 lamps
+    for (int i = width/8; i < width; i += width/4)
+        lamp(i);
+    
+    tree(200);
+    tree(600);
+    cloud(40, 40);
     
 }
 
 // display background
 void background()
-{
-    background (#000000);
+{   
+    color c1 = color(100, 180, 250);
+    color c2 = color(175, 212, 253);
+    
+    // create blue gradient
+    for(int y = 0; y < height; y++)
+    {
+      float n = map(y, 0, height, 0, 1);
+      color newc = lerpColor(c1, c2, n);
+      stroke(newc);
+      line(0, y, width, y);
+  }
 }
 
-// display gears
-void gears()
+// display bricks floor
+void floor()
 {
+    fill(#552211);
+    rect(0, floorPos, width, height);
     
-    translate(width/2, height/2);
-    rotate(rot);
-    rot += 0.04;
-    imageMode(CENTER);
-    image(gear, 0, 0);
+    int brickSizeX = 20;
+    int brickSizeY = 12;
+    fill(#C68F53); // brick color
+    int counter = 0; // for offsetting bricks
     
- 
+    for (int j = 2; j < 200; j+= brickSizeY+2)
+    {
+      for (int i = 2; i < width; i+= brickSizeX+2)
+      {
+        if ( counter % 2 == 0) // even line
+          rect(i-50, floorPos+j, brickSizeX + i, brickSizeY);
+        else // odd line
+          rect(i+20, floorPos+j, brickSizeX + i, brickSizeY);
+        counter++;
+      }
+    }
+}
 
+// display building
+void building(int x) 
+{
+  noStroke();
+  fill(#6A6F7C);
+  rect(x, floorPos, 200, -200);
+  
+  // windows
+  fill(#aaaaab);
+  for (int i = x+16; i < 240; i += 30)
+      rect(i, 260, 20, 40);
+  
+  for (int i = x+16; i < 240; i += 30)
+      rect(i, 320, 20, 40);
+  
+  // door
+  stroke(#222222);
+  rect(x + 100, floorPos-2, 32, -50);
+  fill(#555555);
+  ellipse(x + 108, floorPos-18, 6, 6);
+}
 
+// display street lamp
+void lamp(int x)
+{  
+  fill(#222233);
+  rect(x, 350, 8, 100);
+  fill(#555544);
+  rect(x+3, 350, 4, 100);
+  fill(#666655);
+  stroke(#222222);
+  strokeWeight(1);
+  ellipse(x+4, 340, 15, 35);
+  noStroke();
+  fill(#ccccaa);
+  ellipse(x+4, 340, 8, 26);
 
+}
+
+// display tree
+void tree(int x)
+{ 
+  // trunk
+  fill(#644C35);
+  rect(x, 350, 16, 100);
+  fill(#836242);
+  rect(x+3, 350, 8, 100);
+  fill(#666655);
+  
+  // leaves
+  stroke(#222222);
+  strokeWeight(1);
+  fill(#13AA00);
+  ellipse(x-20, 340, 60, 50);
+  noStroke();
+  fill(#42E32E);
+  ellipse(x-20, 340, 40, 30);
+  
+  stroke(#222222);
+  strokeWeight(1);
+  fill(#13AA00);
+  ellipse(x-30, 310, 50, 60);
+  noStroke();
+  fill(#42E32E);
+  ellipse(x-30, 310, 30, 40);
+  
+  stroke(#222222);
+  strokeWeight(1);
+  fill(#13AA00);
+  ellipse(x+40, 340, 60, 50);
+  noStroke();
+  fill(#42E32E);
+  ellipse(x+40, 340, 40, 30);
+  
+  stroke(#222222);
+  strokeWeight(1);
+  fill(#13AA00);
+  ellipse(x+50, 310, 50, 60);
+  noStroke();
+  fill(#42E32E);
+  ellipse(x+42, 310, 30, 40);
+  
+  stroke(#222222);
+  strokeWeight(1);
+  fill(#13AA00);
+  ellipse(x+8, 300, 90, 100);
+  noStroke();
+  fill(#42E32E);
+  ellipse(x+8, 300, 60, 70);
+
+}
+
+// display cloud
+void cloud(int x, int y)
+{ 
+  fill(#E0E2E3);
+  ellipse(x+30, y, 60, 50);
+  fill(#E0E2E3);
+  ellipse(x, y, 60, 50);
+  
+  fill(#ffffff);
+  ellipse(x, y, 40, 30); 
+  fill(#ffffff);
+  ellipse(x+30, y, 40, 30);
 
 }
