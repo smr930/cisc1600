@@ -10,6 +10,7 @@
 // normal vars
 int scene = 0;
 int floorPos = 450;
+float carPosX = 200;
 
 // for instructions/loading animation
 float beginButtonScale = 0;
@@ -17,13 +18,12 @@ float loadingScale = 0;
 
 
 // for mainScene animation
-float rot = 0;
+float cloudsPos[] = {0, 0, 0};
 
 void setup()
 {
    size (800, 600);
 
-  
 }
 
 void draw()
@@ -48,6 +48,27 @@ void draw()
   
 }
 
+// keyboard event handler
+void keyPressed() 
+{
+  //println("pressed " + int(key) + " " + keyCode);
+  
+  if(keyCode == 37)
+  {
+    carPosX -= 5;
+  }
+  
+  if(keyCode == 39)
+  {
+    carPosX += 5;
+  }
+  
+  if(keyCode == 81)
+  {
+    exit();
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // display instructions
 void instructions()
@@ -69,42 +90,63 @@ void instructions()
    textAlign(CENTER);
    fill(#f79000);
    textSize(22);
-   text("1. Use mouse move ship left/right", width/2, 200); 
-   text("2. Use UP and Down arrows to move ship forward/back.", width/2, 250); 
-   text("3. Type Q to quit", width/2, 300);   
+   text("Use left/right keys to move the car", width/2, 200); 
+   text("-----------------------------------", width/2, 250); 
+   text("Q key to quit", width/2, 300);   
       
    // create button
-  fill(#dd1010); // button rect color
-  noStroke();
-  ellipse(width / 2 - 200, height - 100, 60 + cos(beginButtonScale), 60 + cos(beginButtonScale));
-  ellipse(width / 2 + 200, height - 100, 60 + cos(beginButtonScale), 60 + cos(beginButtonScale));
-  rect((width/2), height - 100, 400, 60 + cos(beginButtonScale));
+   color colorN = color(221, 16, 16); // normal color
+   color colorH = color(255, 187, 98); // highlighted color
+   if (mouseHover())
+      fill(colorH); 
+   else
+      fill(colorN);
   
-  textAlign(CENTER);
-  fill(#ffffff); // button text color
-  textSize(30);
-  text("BEGIN", width/2, height - 90);
+   noStroke();
+   ellipse(width / 2 - 200, height - 100, 60 + cos(beginButtonScale), 60 + cos(beginButtonScale));
+   ellipse(width / 2 + 200, height - 100, 60 + cos(beginButtonScale), 60 + cos(beginButtonScale));
+   rect((width/2), height - 100, 400, 60 + cos(beginButtonScale));
   
-  // animate
-  if (beginButtonScale > 5)
+ 
+  
+   textAlign(CENTER);
+   fill(#ffffff); // button text color
+   textSize(30);
+   text("BEGIN", width/2, height - 90);
+  
+   // animate
+   if (beginButtonScale > 5)
        beginButtonScale = 0;
    else
      beginButtonScale += 0.1;
     
-  // check if the button is clicked
-  if (mousePressed == true) {
-     if( mouseX <= (width/2) + 200 && 
-         mouseX >= (width/2) - 200 && 
-         mouseY <= height + 130 && 
-         mouseY >= height - 130) 
+   // check if the button is clicked
+   if (mousePressed == true) 
+   {
+       if( mouseX <= (width/2) + 200 && 
+           mouseX >= (width/2) - 200 && 
+           mouseY <= height + 130 && 
+           mouseY >= height - 130) 
      {
          print("Begin button is clicked!\n");
          scene = 1;
      }
   }
 }
+
+boolean mouseHover() 
+{
+  if (mouseX >= (width/2) - 200 && mouseX <= (width/2) + 200 && 
+      mouseY >= height - 130 && mouseY <= height + 130) 
+      {
+        return true;
+  } else 
+  {
+    return false;
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////
-// display a fake loading screen
+// display a sudo loading screen
 void loading()
 {
    background (#081636);
@@ -137,20 +179,22 @@ void loading()
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// combine elements into once scene
+// combine elements into one scene
 void mainScene()
 {
     background();
     floor();
     building(50); 
+    tree(200);
+    tree(600);
+    car(carPosX);
+    sun();
     
     // display 4 lamps
     for (int i = width/8; i < width; i += width/4)
         lamp(i);
     
-    tree(200);
-    tree(600);
-    cloud(40, 40);
+    cloudsAnimated();
     
 }
 
@@ -167,7 +211,15 @@ void background()
       color newc = lerpColor(c1, c2, n);
       stroke(newc);
       line(0, y, width, y);
-  }
+    }
+    
+    // far away buildings
+    fill(#996F7C, 64);
+    rect(480, floorPos, 100, -80);
+    fill(#B3E36C, 32);
+    rect(320, floorPos, 70, -160);
+    fill(#BCBA9A, 32);
+    rect(720, floorPos, 90, -180);
 }
 
 // display bricks floor
@@ -178,7 +230,7 @@ void floor()
     
     int brickSizeX = 20;
     int brickSizeY = 12;
-    fill(#C68F53); // brick color
+    fill(#B98145); // brick color
     int counter = 0; // for offsetting bricks
     
     for (int j = 2; j < 200; j+= brickSizeY+2)
@@ -237,6 +289,7 @@ void lamp(int x)
 void tree(int x)
 { 
   // trunk
+  noStroke();
   fill(#644C35);
   rect(x, 350, 16, 100);
   fill(#836242);
@@ -286,17 +339,119 @@ void tree(int x)
 
 }
 
-// display cloud
-void cloud(int x, int y)
+// display clouds
+void cloud1(float x, float y)
 { 
-  fill(#E0E2E3);
+  fill(#E0E2E3, 220);
   ellipse(x+30, y, 60, 50);
-  fill(#E0E2E3);
+  fill(#E0E2E3, 220);
   ellipse(x, y, 60, 50);
   
   fill(#ffffff);
   ellipse(x, y, 40, 30); 
   fill(#ffffff);
   ellipse(x+30, y, 40, 30);
+}
 
+void cloud2(float x, float y)
+{ 
+  fill(#E0E2E3, 128);
+  ellipse(x+30, y, 50, 50);
+  fill(#E0E2E3, 128);
+  ellipse(x, y, 50, 50);
+  fill(#E0E2E3, 128);
+  ellipse(x+15, y, 50, 50);
+  
+  fill(#ffffff, 128);
+  ellipse(x, y, 60, 40); 
+  fill(#ffffff, 128);
+  ellipse(x+30, y, 60, 40);
+}
+
+void cloud3(float x, float y)
+{ 
+  fill(#E0E2E3, 64);
+  ellipse(x+40, y, 80, 40);
+  fill(#E0E2E3, 64);
+  ellipse(x, y, 80, 40);
+  
+  fill(#ffffff, 64);
+  ellipse(x, y, 50, 30); 
+  fill(#ffffff, 64);
+  ellipse(x+40, y, 50, 30);
+}
+
+void cloudsAnimated()
+{
+     // top row
+     for (int i = -width+100; i < width; i += 120)
+        cloud1(i + cloudsPos[0], 50);
+        
+     if (cloudsPos[0] > width - 200)
+         cloudsPos[0] = 0;
+     else
+        cloudsPos[0]++;
+        
+     // middle row
+     for (int i = -width+100*2; i < width; i += 120*2)
+        cloud2(i + cloudsPos[1], 120);
+        
+     if (cloudsPos[1] > width - 80)
+         cloudsPos[1] = 0;
+     else
+        cloudsPos[1] += 0.5;
+        
+     // bottom row
+     for (int i = -width+100*4; i < width; i += 120*3)
+        cloud3(i + cloudsPos[2], 200);
+        
+     if (cloudsPos[2] > width - 200)
+         cloudsPos[2] = 0;
+     else
+        cloudsPos[2] += 0.25;
+     
+}
+
+void sun()
+{
+  noStroke();
+  fill(#FFFEED);
+  ellipse(width - 50, 46, 80, 80);  
+}
+
+void car(float x)
+{  
+  stroke(#000000); 
+  strokeWeight(1); 
+  fill(#F28218);   // car color
+  
+  // car body
+  rect(x-80, 400, 160, 40); 
+  fill(#FFA148);
+  rect(x-80, 400, 160, 10); 
+  quad ((-40 + x), 400,
+        ( 40  + x), 400,
+        ( 30  + x), 370,
+        (-30  + x), 370  
+    );
+     
+  // windows
+  fill(#555555);
+  quad ((-36 + x), 400,
+        ( 36  + x), 400,
+        ( 28  + x), 372,
+        (-28  + x), 372  
+    );
+  fill(#F28218);
+  rect(x-2, 372, 5, 30);
+    
+  // tires
+  fill(#555555);
+  ellipse(-50 + x, 435, 30, 30); 
+  fill(#aaaaaa);
+  ellipse(-50 + x, 435, 15, 15);
+  fill(#555555);
+  ellipse(+50 + x, 435, 30, 30); 
+  fill(#aaaaaa);
+  ellipse(+50 + x, 435, 15, 15);      
 }
