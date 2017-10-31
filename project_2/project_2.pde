@@ -1,6 +1,6 @@
 /*************************
  * CISC 1600 - Project 2
- * Syed Raza, Greg Lin
+ * Syed Raza, Weijie Lin
  * Group #8
  *************************/
 
