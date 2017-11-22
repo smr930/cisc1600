@@ -4,7 +4,12 @@
 ;    Syed Raza, Weijie Lin
 ;    CISC 1600 - Group #8
 ;    11-17-17
-;    PROJECT-DESCRIPTION
+;    PROJECT-DESCRIPTION:
+;        Turtles begin there life roaming around looking for food
+;        to eat so they can keep their energy up. If they find food,
+;        they slowly increase in their physical size. As they move
+;        around, they lose energy. If no food is nearby to keep their
+;        energy up, they change color to red and eventually die.
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -97,7 +102,6 @@
 
 ;; If you need any global or agent variables, put them here.
 
-;;turtles-own [ speed ]
 turtles-own [energy]
 
 
@@ -123,16 +127,13 @@ end
 ;;;;;;;;;; (10) SUB-PROCEDURES USED BY SETUP ;;;;;;;;
 
 to setup-patches
-  ;; Put your code to setup your patches here.
   ask patches [set pcolor 1] ; dark grey color
 
 end
 
 to setup-turtles
-    ;; Put your code to setup your turtles here.
     create-turtles turtleAmount
     ask turtles [
-        ;set size 4
         set color white
         setxy random-xcor random-ycor
   ]
@@ -148,11 +149,7 @@ end
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-
 to go
-
-
   ;; The do-plots function is at the bottom of the page.
   ;do-plots             ;; Calls the do-plots function.
   if ticks >= 500 [ stop ]
@@ -160,9 +157,7 @@ to go
   eat
   is-alive
   tick
-
 end
-
 
 ;;;;;;;;;; (12) SUB-PROCEDURES USED BY GO  ;;;;;;;;
 
@@ -170,16 +165,15 @@ to move-turtles
   ask turtles [
     right random 360
     forward 1
-    set energy energy - 1  ;; decrease one unit of energy
+    set energy energy - 1
   ]
 end
 
 to eat
     ask turtles [
-    if pcolor = 1 [
+    set size size + .01
+    if pcolor = 1 [  ;; check for grey patch
       set pcolor black
-
-      ;; increase energy
       set energy energy + 5
     ]
 
@@ -189,13 +183,40 @@ end
 to is-alive
   ask turtles [
     if energy > 10 [set color white]
-    if energy < 10 [set color red]
-    if energy <= 0 [ die ] ;; no energy left, then die
+    if energy < 10 [
+      set color red
+      set size size - .02
+    ]
+    if energy <= 0 [ die ]
   ]
 end
 
+;;;;;;;;;;;;;;;;;;;;; (14) PLOTS SECTION ;;;;;;;;;;;;;;;;;;;;;
+;
+; Use this section to implement all of the procedures that
+; relate to plotting information (graphing information)
+; in the interface window.
+;
+; You will usually only need one procedure called "do-plots"
+; in this section, and it will be called by both setup and
+; by go.
+;
+; You must do 3 things in order to get soemthing to appear
+; in a plot window:
+;   1. You must choose a plot window:
+;      Example: set-current-plot "Population"
+;   2. You must pick the "pen" you are going to use.
+;      Example: set-current-plot-pen "turtles"
+;   3. You must "plot" (draw) some value with that pen.
+;      Example: plot count turtles
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
+to do-plots
+
+
+end
 
 
 
@@ -272,7 +293,7 @@ turtleAmount
 turtleAmount
 0
 100
-20.0
+21.0
 1
 1
 NIL
